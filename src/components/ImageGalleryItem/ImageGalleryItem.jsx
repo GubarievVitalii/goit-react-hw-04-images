@@ -1,38 +1,43 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './ImageGalleryItem.module.css';
-import Modal from 'components/Modal/Modal'
+import Modal from 'components/Modal/Modal';
 
-class ImageGalleryItem extends Component {
-    state = {
-    showModal: false,
-    };
+export default function ImageGalleryItem({ url, alt, largeImageURL }) {
 
-    onModalShow = () => {
-    this.setState({ showModal: true });
-    };
+  const [showModal, setShowModal] = useState(false);
 
-    onModalClose = () => {
-    this.setState({ showModal: false });
-    };
+  const onModalShow = () => {
+    setShowModal(true);
+  };
 
-    render() {
-        const { url, alt, largeImageURL } = this.props;
-        return (
-            <>
-                <li className={s.galleryItem}>
-                    <img className={s.galleryItemImage} src={url} alt={alt} onClick={this.onModalShow}/>
-                </li>
-                {this.state.showModal && (<Modal largeImageURL={largeImageURL} alt={alt} onModalClose={this.onModalClose}/>)}
-            </>
-        )
-    }
+  const onModalClose = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <li className={s.galleryItem}>
+        <img
+          className={s.galleryItemImage}
+          src={url}
+          alt={alt}
+          onClick={onModalShow}
+        />
+      </li>
+      {showModal && (
+        <Modal
+          largeImageURL={largeImageURL}
+          alt={alt}
+          onModalClose={onModalClose}
+        />
+      )}
+    </>
+  );
 }
 
 ImageGalleryItem.propTypes = {
-    url: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired,
-    largeImageURL: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
 };
-
-export default ImageGalleryItem;
